@@ -1,6 +1,8 @@
 /*
  * Sunrise by Gary Grossi
- * 
+ * Created on 04/10/2017
+ * Updated on 04/10/2017
+ * Version 0.1
  */
 
 #include <avr/pgmspace.h>
@@ -40,11 +42,10 @@ void setup() {
   reset_strip();
 }
 
-
-
 /* Main Program */
 void loop() 
 {
+  
   send_pattern(sunrise_1, 70);
   delay(1000);
   send_pattern(sunrise_2, 70);  
@@ -58,36 +59,10 @@ void loop()
   }
 }
 
-
-/*******************************************************************************
- * Function Name  : send_1M_pattern
- * Description    : Transmit pattern to whole 1 meter strip
- *                  
- * Input          : pointer to ROM pattern; pattern length; frame rate
- *                  
- * Output         : None
- * Return         : None
- *******************************************************************************/
-void send_1M_pattern(const unsigned long data[][10], int pattern_no, int frame_rate)
-{
-  int i=0;
-  int j=0;
-  uint32_t temp_data;
-
-  for (i=0;i<pattern_no;i++)
-  {
-    noInterrupts();
-    for (j=0;j<10;j++)
-    {
-      temp_data=pgm_read_dword_near(&data[i][j]);
-      send_strip(temp_data);
-    }
-    interrupts();
-
-    delay(frame_rate);
-  }
-}
-
+/*
+ * Description    : Transmit pattern to whole 1 meter strip         
+ * Input          : pointer to pattern; frame rate
+ */
 void send_pattern(const unsigned long data[10], int frame_rate){
   int i=0;
   uint32_t temp_data;
@@ -102,16 +77,10 @@ void send_pattern(const unsigned long data[10], int frame_rate){
   delay(frame_rate);
 }
 
-
-/*******************************************************************************
- * Function Name  : send_strip
- * Description    : Transmit 24 pulse to LED strip
- *                  
+/*
+ * Description    : Transmit 24 pulse to LED strip         
  * Input          : 24-bit data for the strip
- *                  
- * Output         : None
- * Return         : None
- *******************************************************************************/
+ */
 void send_strip(uint32_t data)
 {
   int i;
@@ -175,23 +144,15 @@ void send_strip(uint32_t data)
       __asm__("nop\n\t");      
 /*----------------------------*/         
     }
-
+    
     j>>=1;
-  }
-
-
-  
+  } 
+   
 }
 
-/*******************************************************************************
- * Function Name  : reset_strip
+/*
  * Description    : Send reset pulse to reset all color of the strip
- *                  
- * Input          : None
- *                  
- * Output         : None
- * Return         : None
- *******************************************************************************/
+ */
 void	reset_strip()
 {
   DATA_0;
